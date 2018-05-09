@@ -13,6 +13,7 @@ namespace SimpleCheatSystem
     {
         public static bool cheatEnabled = false;
         static List<Cheat> CheatList;
+        static float time;
         private static CheatEngine instance;
 
         public void Awake()
@@ -33,7 +34,7 @@ namespace SimpleCheatSystem
                     CheatList[i].onCheatActivated.Invoke();
                     if (!CheatList[i].isPersistent)
                     {
-                        instance.Run();
+                        instance.StartCoroutine(Timer(CheatList[i].disableTime, 0));
 
                     }
                     break;
@@ -44,10 +45,6 @@ namespace SimpleCheatSystem
                 }
             }
         }
-        private void Run()
-        {
-            StartCoroutine(Timer(3, 0));
-        }
 
         public static void SetCheatLibrary(List<Cheat> list)
         {
@@ -56,8 +53,9 @@ namespace SimpleCheatSystem
 
         private static IEnumerator Timer(float time, int index)
         {
+            //  Debug.Log(time);
             yield return new WaitForSeconds(time);
-            CheatList[index].ifNotPersistent.Invoke();
+            CheatList[index].disableCheat.Invoke();
         }
     }
 }

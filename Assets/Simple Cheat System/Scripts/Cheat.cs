@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
 using UnityEngine.Events;
 
 namespace SimpleCheatSystem
@@ -16,8 +12,9 @@ namespace SimpleCheatSystem
         public string name;
         public string combo;
         public bool isPersistent = true;
+        public float disableTime = 3f;
         public UnityEvent onCheatActivated;
-        public UnityEvent ifNotPersistent;
+        public UnityEvent disableCheat;
 
         public Cheat(string _name, string _combo, bool _isPersistent)
         {

@@ -6,6 +6,9 @@ using UnityEngine.UI;
 public enum InputType { InputBox, KeyPress }
 namespace SimpleCheatSystem
 {
+    /// <summary>
+    /// CLASS: Handles code input from inputbox and keypress
+    /// </summary>
     public class CheatInput : MonoBehaviour
     {
         public InputType inputType;
@@ -83,11 +86,8 @@ namespace SimpleCheatSystem
                     {
                         if (Input.GetKeyDown(kcode))
                         {
-                            Debug.Log("KeyCode down: " + kcode);
-                            if (kcode == KeyCode.Escape)
-                            {
+                            // Debug.Log("KeyCode down: " + kcode);
 
-                            }
                             if (kcode != KeyCode.Escape && timeIterator < cheatTime)
                             {
                                 if (stepInput2 == 0)

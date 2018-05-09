@@ -15,6 +15,7 @@ namespace SimpleCheatSystem
         void Start()
         {
             CheatEngine.SetCheatLibrary(cheatCodes);
+            gameObject.AddComponent<CheatEngine>();
         }
 
     }
