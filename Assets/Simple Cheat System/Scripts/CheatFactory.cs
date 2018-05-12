@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SimpleCheatSystem
 {
     /// <summary>
-    /// CLASS: Factory stores cheat code name,= and cheats in a list
+    /// CLASS: Factory stores cheat code name and cheats in a list
     /// </summary>
     public class CheatFactory : MonoBehaviour
     {

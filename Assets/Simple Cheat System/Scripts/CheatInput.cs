@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,22 +13,26 @@ namespace SimpleCheatSystem
     public class CheatInput : MonoBehaviour
     {
         public InputType inputType;
-        [Header("UI Settings")]
+        public float cheatTime = 1f;
+        [Header("User Interface")]
         public GameObject cheatPanel;
         public InputField inputField;
-        public List<string> cheatCache = new List<string>();
-        public float cheatTime = 1f;
+        public Text cheatText;
+        public List<string> cheatCache = new List<string>(); //make public to see combo in inspector
+
 
         private bool boolToggle = false;
-        private int stepInput1 = 0;
-        private int stepInput2 = 0;
         float timeIterator = 0;
         bool firstInput = false;
+        private int stepInput1 = 0;
+        private int stepInput2 = 0;
         private string cheatString = "";
-
+        private CheatEngine cEngine;
+        public static CheatInput cInstance;
         private void Start()
         {
-
+            cEngine = CheatEngine.instance;
+            cInstance = this;
         }
 
 
@@ -36,6 +41,7 @@ namespace SimpleCheatSystem
 
             InputCheck();
             Timekeeper();
+
         }
         // Chooses UI input box or regular input
         private void InputCheck()
@@ -63,6 +69,7 @@ namespace SimpleCheatSystem
                 {
                     // inputField.text = "";
                     HidePanel();
+
                 }
             }
 
@@ -177,6 +184,29 @@ namespace SimpleCheatSystem
                     stepInput2 = 0;
                 }
             }
+        }
+        public void StartEnum(string txt)
+        {
+            print(txt);
+            StartCoroutine(TxtEnum(txt));
+        }
+
+        public IEnumerator TxtEnum(string textValue)
+        {
+            print("working");
+            cheatText.gameObject.SetActive(true);
+            cheatText.text = textValue;
+            yield return new WaitForSeconds(.8f);
+            if (cheatText.color != Color.clear)
+            {
+                Color newCol;
+                if (ColorUtility.TryParseHtmlString("#FFFFFF00", out newCol))
+                    cheatText.color = Color.Lerp(cheatText.color, newCol, 1.2f * Time.deltaTime);
+            }
+            yield return new WaitForSeconds(1f);
+            cheatText.color = Color.white;
+            cheatText.gameObject.SetActive(false);
+
         }
     }
 }

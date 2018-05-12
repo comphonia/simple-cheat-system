@@ -13,35 +13,49 @@ namespace SimpleCheatSystem
     {
         public static bool cheatEnabled = false;
         static List<Cheat> CheatList;
+        static List<string> inputCache = new List<string>();
         static float time;
-        private static CheatEngine instance;
+        public static CheatEngine instance;
+        public static CheatInput cInput;
+
 
         public void Awake()
         {
             instance = this;
-
         }
 
 
-        public static void CheckEntry(string input, string compareTo = null)
+        public static void CheckEntry(string input)
         {
-
+            cInput = CheatInput.cInstance;
+            string userInput = input.Trim().ToLower();
             for (int i = 0; i < CheatList.Count; i++)
             {
-                if (input.Trim().ToLower() == CheatList[i].Combo)
+                //Activate Cheat
+                if (userInput == CheatList[i].Combo && !inputCache.Contains(userInput))
                 {
+                    inputCache.Add(userInput);
                     Debug.Log(CheatList[i].name);
                     CheatList[i].onCheatActivated.Invoke();
+                    cInput.StartEnum(CheatList[i].name + " Activated");
                     if (!CheatList[i].isPersistent)
                     {
-                        instance.StartCoroutine(Timer(CheatList[i].disableTime, 0));
+                        instance.StartCoroutine(Timer(CheatList[i].disableTime, i));
+                        inputCache.Remove(userInput);
 
                     }
                     break;
                 }
-                else
+                // Deactivate Cheat
+                else if (userInput == CheatList[i].Combo && inputCache.Contains(userInput))
                 {
-                    Debug.Log("Wrong Input.");
+                    if (CheatList[i].isPersistent)
+                    {
+                        CheatList[i].disableCheat.Invoke();
+                        inputCache.Remove(userInput);
+                        cInput.StartEnum(CheatList[i].name + " Deactivated");
+                    }
+                    break;
                 }
             }
         }
@@ -53,7 +67,6 @@ namespace SimpleCheatSystem
 
         private static IEnumerator Timer(float time, int index)
         {
-            //  Debug.Log(time);
             yield return new WaitForSeconds(time);
             CheatList[index].disableCheat.Invoke();
         }
