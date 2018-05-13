@@ -22,6 +22,7 @@ namespace SimpleCheatSystem
         public void Awake()
         {
             instance = this;
+
         }
 
 
@@ -37,7 +38,7 @@ namespace SimpleCheatSystem
                     inputCache.Add(userInput);
                     Debug.Log(CheatList[i].name);
                     CheatList[i].onCheatActivated.Invoke();
-                    cInput.StartEnum(CheatList[i].name + " Activated");
+                    cInput.TxtEnum(CheatList[i].name + " Activated");
                     if (!CheatList[i].isPersistent)
                     {
                         instance.StartCoroutine(Timer(CheatList[i].disableTime, i));
@@ -53,7 +54,7 @@ namespace SimpleCheatSystem
                     {
                         CheatList[i].disableCheat.Invoke();
                         inputCache.Remove(userInput);
-                        cInput.StartEnum(CheatList[i].name + " Deactivated");
+                        cInput.TxtEnum(CheatList[i].name + " Deactivated");
                     }
                     break;
                 }

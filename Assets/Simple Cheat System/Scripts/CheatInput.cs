@@ -12,13 +12,15 @@ namespace SimpleCheatSystem
     /// </summary>
     public class CheatInput : MonoBehaviour
     {
+        [Tooltip("Choose between Inputbox or keypress")]
         public InputType inputType;
+        [Tooltip("Time allocated to type cheat in")]
         public float cheatTime = 1f;
-        [Header("User Interface")]
+        [Space(10)]
         public GameObject cheatPanel;
         public InputField inputField;
         public Text cheatText;
-        public List<string> cheatCache = new List<string>(); //make public to see combo in inspector
+        private List<string> cheatCache = new List<string>(); //make public to see combo in inspector
 
 
         private bool boolToggle = false;
@@ -27,11 +29,9 @@ namespace SimpleCheatSystem
         private int stepInput1 = 0;
         private int stepInput2 = 0;
         private string cheatString = "";
-        private CheatEngine cEngine;
         public static CheatInput cInstance;
         private void Start()
         {
-            cEngine = CheatEngine.instance;
             cInstance = this;
         }
 
@@ -43,6 +43,7 @@ namespace SimpleCheatSystem
             Timekeeper();
 
         }
+        bool istoggle;
         // Chooses UI input box or regular input
         private void InputCheck()
         {
@@ -83,6 +84,13 @@ namespace SimpleCheatSystem
                 HidePanel();
                 if (Input.GetButtonDown("Cancel"))
                 {
+                    if (istoggle == false)
+                    {
+                        TxtEnum("Cheat Enabled");
+                        istoggle = !istoggle;
+                    }
+                    else if (istoggle == true)
+                    { TxtEnum("Cheat Disabled"); istoggle = !istoggle; }
                     CheatEngine.cheatEnabled = !CheatEngine.cheatEnabled;
 
                 }
@@ -185,15 +193,13 @@ namespace SimpleCheatSystem
                 }
             }
         }
-        public void StartEnum(string txt)
+        public void TxtEnum(string txt)
         {
-            print(txt);
-            StartCoroutine(TxtEnum(txt));
+            StartCoroutine(StartEnum(txt));
         }
 
-        public IEnumerator TxtEnum(string textValue)
+        public IEnumerator StartEnum(string textValue)
         {
-            print("working");
             cheatText.gameObject.SetActive(true);
             cheatText.text = textValue;
             yield return new WaitForSeconds(.8f);
