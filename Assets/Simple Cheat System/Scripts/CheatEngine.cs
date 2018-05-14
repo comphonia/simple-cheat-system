@@ -36,7 +36,6 @@ namespace SimpleCheatSystem
                 if (userInput == CheatList[i].Combo && !inputCache.Contains(userInput))
                 {
                     inputCache.Add(userInput);
-                    Debug.Log(CheatList[i].name);
                     CheatList[i].onCheatActivated.Invoke();
                     cInput.TxtEnum(CheatList[i].name + " Activated");
                     if (!CheatList[i].isPersistent)

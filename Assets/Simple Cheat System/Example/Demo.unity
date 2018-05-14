@@ -1938,7 +1938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d50906fee4bc904d8904f0fb2b0eec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputType: 1
+  inputType: 0
   cheatTime: 2
   cheatPanel: {fileID: 1618354261}
   inputField: {fileID: 888600390}
